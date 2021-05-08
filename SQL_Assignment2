@@ -1,0 +1,32 @@
+1. Find out the number of documentaries with deleted scenes.
+
+    select count(*) from film f,film_category fc,category c where f.film_id=fc.film_id and fc.category_id=c.category_id
+    and c.name='Documentary' and f.special_features LIKE '%Deleted Scenes%';
+
+
+2. Find out the number of sci-fi movies rented by the store managed by Jon Stephens.
+
+    select * from rental r, staff s, film_list fl ,inventory i, store st where r.inventory_id=i.inventory_id
+    and i.film_id=fl.FID and fl.category='Sci-Fi'
+    and r.staff_id=s.staff_id and s.staff_id=st.manager_staff_id and s.first_name='Jon' and s.last_name='Stephens';
+
+
+3. Find out the total sales from Animation movies.
+
+    select sum(p.amount) as animation_sales from rental r, payment p, film_list fl, inventory i
+    where r.inventory_id=i.inventory_id and i.film_id=fl.FID and fl.category='Animation' and p.rental_id=r.rental_id;
+
+
+4. Find out the top 3 rented category of movies by “PATRICIA JOHNSON”.
+
+    select fl.category,count(*) from film_list fl, rental r, inventory i, customer c
+    where c.first_name='PATRICIA' and c.last_name='JOHNSON'and c.customer_id=r.customer_id and r.inventory_id=i.inventory_id and i.film_id=fl.FID
+    group by fl.category order by 2 DESC LIMIT 3;
+
+
+5. Find out the number of R rated movies rented by “SUSAN WILSON”.
+
+    select count(*) from customer c, rental r,inventory i,film f
+    where c.first_name='SUSAN' and c.last_name='WILSON' and c.customer_id=r.customer_id
+    and r.inventory_id=i.inventory_id and i.film_id=f.film_id and f.rating='R';
+
